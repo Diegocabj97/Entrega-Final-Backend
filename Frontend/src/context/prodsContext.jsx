@@ -5,8 +5,8 @@ import { CartContext } from "./cartContext.jsx";
 const ProductsContext = createContext();
 
 const ProdsProvider = ({ children }) => {
-  const [prod, setProds] = useState([]);
-  const [prodId, setProdId] = useState();
+  const [prods, setProds] = useState([]);
+  const [prodId, setProdId] = useState([]);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -26,12 +26,15 @@ const ProdsProvider = ({ children }) => {
 
     getProducts();
   }, []);
+
   useEffect(() => {
-    const prodIds = prod.map((product) => product._id).toString();
-    setProdId(prodIds);
-  });
+    if (prods.length > 0) {
+      const prodIds = prods.map((product) => product._id).join(",");
+      setProdId(prodIds);
+    }
+  }, [prods]);
   return (
-    <ProductsContext.Provider value={{ setProdId, setProds, prodId, prod }}>
+    <ProductsContext.Provider value={{ setProdId, setProds, prodId, prods }}>
       {children}
     </ProductsContext.Provider>
   );

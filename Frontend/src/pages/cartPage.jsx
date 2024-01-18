@@ -7,13 +7,12 @@ import { CartContext } from "../context/cartContext.jsx";
 import CartItems from "../components/cart/cartItems.jsx";
 
 const CartPage = () => {
-  const { cart, setCart, cartId } = useContext(CartContext);
+  const { cart, setCart, cartId, fetchCart } = useContext(CartContext);
   const navigate = useNavigate();
   const handleIndexClick = () => {
     navigate("/");
   };
-
-  return cart.length < 0 ? (
+  return cart === undefined ? (
     <div>
       <BottomNavigation
         showLabels
@@ -48,7 +47,7 @@ const CartPage = () => {
           onClick={handleIndexClick}
         />
       </BottomNavigation>
-      <h1>El carrito está vacío :(</h1>
+      <h1>Este es tu carrito</h1>
       <CartItems key={`cart-items-${cartId}`} />
     </div>
   );

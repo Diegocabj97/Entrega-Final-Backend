@@ -1,0 +1,28 @@
+.cartItem {
+  padding: 16px;
+  text-align: center;
+  background-color: white;
+  margin-bottom: 10px;
+  min-height: 300px;
+  max-height: 300px;
+}
+.cartItemBody {
+  min-height: 184px;
+  max-height: 184px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.cartItems {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  row-gap: 16px; /* Espacio solo entre las filas */
+}
+
+.cartItemName {
+  margin: 15px;
+}
+
+.cartItemPrice {
+  margin: 15px;
+}

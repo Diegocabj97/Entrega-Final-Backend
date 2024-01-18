@@ -33,6 +33,9 @@ const loginPage = () => {
     if (response.status == 200) {
       setValues(initialState);
       const datos = await response.json();
+
+      const { userEmail } = datos;
+      localStorage.setItem("userEmail", userEmail);
       const { token } = datos;
       const idCart = JSON.parse(datos.cart);
       console.log("idcart " + idCart);

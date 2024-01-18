@@ -1,12 +1,30 @@
 import React, { useContext, useEffect } from "react";
 import { CartContext } from "../../context/cartContext";
 import CloseIcon from "@mui/icons-material/Close";
-import { Grid } from "@mui/material";
-import { ProductsContext } from "../../context/prodsContext";
+import { Button, Grid } from "@mui/material";
 import { URLBACK } from "../../App.jsx";
+import "./cartItems.css";
+import { useNavigate } from "react-router-dom";
+import CardList from "../cards/cardList.jsx";
 
 const CartItems = () => {
-  const { cart, cartId, setCartId, setCart } = useContext(CartContext);
+  const { cart, cartId, setCartId, setCart, fetchCart } =
+    useContext(CartContext);
+  const navigate = useNavigate();
+  const createTicket = async () => {
+    const idCart = localStorage.getItem("cartId");
+    const userEmail = localStorage.getItem("userEmail");
+    const response = await fetch(`${URLBACK}/api/carts/${idCart}/purchase`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        "user-email": userEmail,
+      },
+    });
+    if (response.status === 200) {
+      navigate("/");
+    }
+  };
   useEffect(() => {
     const idCart = localStorage.getItem("cartId");
     const fetchCart = async () => {
@@ -50,38 +68,49 @@ const CartItems = () => {
       console.error("Error al comunicarse con el servidor:", error);
     }
   };
- 
-  return cart.map((cartProduct) => (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <div key={cartProduct._id._id}>
-        <div className="cartItem">
-          <img
-            className="cartItemImg"
-            src={cartProduct._id.thumbnail}
-            alt="products-card"
-          />
-          <div className="cartItem">
-            <h3 className="cartItemName">{cartProduct._id.title}</h3>
-            <h3 className="cartItemName">{cartProduct._id._id}</h3>
-            <h4 className="cartItemPrice">${cartProduct._id.price}</h4>
-            <p className="cartItemQuantity">Cantidad: {cartProduct.quantity}</p>
-          </div>
 
-          <div>
-            <CloseIcon
-              onClick={() => removeProductFromCart(cartProduct._id._id)}
-              className="rmvBtn"
+  return (
+    <Grid container spacing={2}>
+      {cart.map((cartProduct) => (
+        <Grid key={cartProduct._id._id} item xs={6} md={3}>
+          <div className="cartItem">
+            <img
+              className="cartItemImg"
+              src={cartProduct._id.thumbnail}
+              alt="products-card"
             />
+            <div className="cartItemBody">
+              <h3 className="cartItemName">{cartProduct._id.title}</h3>
+              <h4 className="cartItemPrice">${cartProduct._id.price}</h4>
+              <p className="cartItemQuantity">
+                Cantidad: {cartProduct.quantity}
+              </p>
+            </div>
+            <div>
+              <CloseIcon
+                onClick={() => removeProductFromCart(cartProduct._id._id)}
+                className="rmvBtn"
+                sx={{
+                  backgroundColor: "rgb(255, 116, 116);",
+                  marginBottom: "-50px",
+                }}
+              />
+            </div>
           </div>
-        </div>
-      </div>
+        </Grid>
+      ))}
+      <Grid item xs={12}>
+        <Button
+          onClick={createTicket}
+          disabled={cart.length === 0}
+          variant="contained"
+          color="success"
+        >
+          Finalizar Compra
+        </Button>
+      </Grid>
     </Grid>
-  ));
+  );
 };
 
 export default CartItems;

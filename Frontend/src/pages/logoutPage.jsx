@@ -14,6 +14,7 @@ const LogoutPage = () => {
   useEffect(() => {
     deleteCookie("jwtCookie");
     deleteCookie("cartId");
+    localStorage.removeItem("userEmail");
     localStorage.removeItem("cartId");
     setCart([]);
   }, []);

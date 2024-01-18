@@ -6,8 +6,7 @@ import { Link } from "react-router-dom";
 import Cards from "./card.jsx";
 const CardList = () => {
   const { cart, setCart } = useContext(CartContext);
-  const { prod } = useContext(ProductsContext);
-  console.log(prod);
+  const { prods, prodId } = useContext(ProductsContext);
   return (
     <Container
       sx={{
@@ -19,9 +18,9 @@ const CardList = () => {
       }}
       fixed
     >
-      {prod.map((prod) => (
+      {prods.map((prod) => (
         <div key={prod._id}>
-          <Cards product={prod} />
+          <Cards  product={prod} prodId={prodId} />
         </div>
       ))}
     </Container>
