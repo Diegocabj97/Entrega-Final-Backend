@@ -74,11 +74,7 @@ const Cards = ({ product }) => {
   return (
     <div>
       <Card sx={{ margin: "20px", minWidth: 220, maxWidth: 345 }}>
-        <CardMedia
-          sx={{ height: 140 }}
-          image="/static/images/cards/contemplative-reptile.jpg"
-          title="green iguana"
-        />
+        
         <CardContent sx={{ height: 120 }}>
           <Typography gutterBottom variant="h5" component="div">
             {product.title}
