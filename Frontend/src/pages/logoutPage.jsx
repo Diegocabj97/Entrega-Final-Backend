@@ -19,6 +19,7 @@ const LogoutPage = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("cart");
     localStorage.removeItem("userData");
+    localStorage.removeItem("userEmail");
     setCart([""]);
     navigate("/logout");
   }, []);
