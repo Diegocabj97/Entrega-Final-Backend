@@ -44,6 +44,8 @@ const Cards = ({ product }) => {
 
   const addToCart = async (product) => {
     try {
+      const cartId = localStorage.getItem("cartId");
+      const token = localStorage.getItem("token");
       if (cartId === undefined) {
         console.log("Debes iniciar sesión!");
         navigate("/login");
@@ -54,15 +56,12 @@ const Cards = ({ product }) => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(product),
           }
         );
         if (response.ok) {
-          console.log(
-            `${URLBACK}/api/carts/${cartId}/product/${product._id} ` +
-              "Producto agregado al carrito"
-          );
           // Actualizar el carrito en el estado local
           setCart((prevCart) => [...prevCart, { ...product, quantity: 1 }]);
           // Actualizar el carrito en el servidor
@@ -75,7 +74,7 @@ const Cards = ({ product }) => {
   };
   return (
     <div>
-      <Card sx={{ margin: "20px",minWidth: 220 ,maxWidth: 345 }}>
+      <Card sx={{ margin: "20px", minWidth: 220, maxWidth: 345 }}>
         <CardMedia
           sx={{ height: 140 }}
           image="/static/images/cards/contemplative-reptile.jpg"

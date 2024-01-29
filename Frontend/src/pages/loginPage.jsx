@@ -9,6 +9,7 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import RestoreIcon from "@mui/icons-material/Restore";
 import { CartContext } from "../context/cartContext.jsx";
 import Box from "@mui/material/Box";
+import { UserContext } from "../context/userContext.jsx";
 const initialState = {
   email: "",
   password: "",
@@ -16,6 +17,7 @@ const initialState = {
 
 const loginPage = () => {
   const { setCartId } = useContext(CartContext);
+  const { user, userId, setUser, setUserId } = useContext(UserContext);
   const navigate = useNavigate();
   const handleIndexClick = () => {
     navigate("/");
@@ -27,19 +29,20 @@ const loginPage = () => {
       method: "POST",
       headers: {
         "Content-type": "application/json",
+        credentials: "include",
       },
       body: JSON.stringify(values),
     });
     if (response.status == 200) {
       setValues(initialState);
       const datos = await response.json();
-
-      const { userEmail } = datos;
-      localStorage.setItem("userEmail", userEmail);
+      setUser(JSON.stringify(datos.userInfo));
+      setUserId(JSON.stringify(datos.userInfo._id));
+      localStorage.setItem("userData", JSON.stringify(datos.userInfo));
       const { token } = datos;
       const idCart = JSON.parse(datos.cart);
-      console.log("idcart " + idCart);
       setCartId(idCart);
+
       const cookieOptions = {
         maxAge: 86400000, // Duración de la cookie en milisegundos (1 día)
       };
@@ -48,6 +51,7 @@ const loginPage = () => {
 
       navigate("/");
       alert("Has iniciado sesión!");
+
     } else if (response.status === 401) {
       alert("Usuario no existente");
     }

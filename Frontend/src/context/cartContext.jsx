@@ -9,6 +9,7 @@ const CartProvider = ({ children }) => {
 
   const fetchCart = async () => {
     try {
+      const cartId = localStorage.getItem("cartId");
       const response = await fetch(`${URLBACK}/api/carts/${cartId}`);
       if (!response.ok) {
         throw new Error("Error al obtener el carrito con FETCH");
@@ -18,6 +19,7 @@ const CartProvider = ({ children }) => {
       const cartData = data.payload.products;
       setCartId(cartId);
       setCart(cartData);
+      localStorage.setItem("cart", JSON.stringify(cartData));
     } catch (error) {
       console.error("Error al obtener el carrito:", error);
     }
@@ -31,7 +33,6 @@ const CartProvider = ({ children }) => {
     if (hasCookie && cartId) {
       fetchCart();
       localStorage.setItem("cartId", cartId);
-
       // Configurar un intervalo para llamar a fetchCart cada 5 minutos (puedes ajustar el tiempo según tus necesidades)
       const intervalId = setInterval(fetchCart, 5 * 1000);
 

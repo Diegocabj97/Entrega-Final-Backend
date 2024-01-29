@@ -7,8 +7,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import Cards from "../components/cards/card";
-import CardList from "../components/cards/cardList";
+import Navbar from "../components/navbar/navbar";
 const indexPage = () => {
   const navigate = useNavigate();
 
@@ -30,7 +29,8 @@ const indexPage = () => {
       .some((item) => item.trim().startsWith("jwtCookie="));
   };
   return (
-    <div>
+    <div className="idxPage">
+      <Navbar />
       {hasCookie ? (
         <BottomNavigation
           showLabels
@@ -48,36 +48,9 @@ const indexPage = () => {
             onClick={showCart}
           />
         </BottomNavigation>
-      ) : (
-        <BottomNavigation
-          showLabels
-          sx={{
-            alignSelf: "end",
-            justifyContent: "end",
-            width: "10%",
-            backgroundColor: "rgb(206, 206, 206)",
-            borderRadius: "100px",
-          }}
-        >
-          <BottomNavigationAction
-            label="Cart"
-            icon={<ShoppingCartIcon />}
-            onClick={showCart}
-          />
-        </BottomNavigation>
-      )}
+      ) : null}
       <h2 sx={{ variant: "h1" }}>Bienvenido a mi entrega final de Backend</h2>
       <Stack marginTop={3} alignItems="center" spacing={3} direction="column">
-        {!hasCookie() && (
-          <Button
-            onClick={handleRegisterClick}
-            variant="contained"
-            sx={{ width: "150px" }}
-          >
-            <div>Registrarse</div>
-          </Button>
-        )}
-
         {hasCookie() ? (
           <Button
             onClick={handleLogoutClick}
@@ -94,8 +67,16 @@ const indexPage = () => {
           >
             <div>Ir al login</div>
           </Button>
+        )}{" "}
+        {!hasCookie() && (
+          <Button
+            onClick={handleRegisterClick}
+            variant="contained"
+            sx={{ width: "150px" }}
+          >
+            <div>Registrarse</div>
+          </Button>
         )}
-        <CardList></CardList>
       </Stack>
     </div>
   );

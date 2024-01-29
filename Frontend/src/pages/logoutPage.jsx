@@ -12,11 +12,15 @@ const LogoutPage = () => {
 
   // Llama a la función al cargar la página de logout
   useEffect(() => {
+    setCart([]);
     deleteCookie("jwtCookie");
     deleteCookie("cartId");
-    localStorage.removeItem("userEmail");
     localStorage.removeItem("cartId");
-    setCart([]);
+    localStorage.removeItem("token");
+    localStorage.removeItem("cart");
+    localStorage.removeItem("userData");
+    setCart([""]);
+    navigate("/logout");
   }, []);
   const handleIndexClick = () => {
     navigate("/");

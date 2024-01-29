@@ -7,11 +7,17 @@ const ProductsContext = createContext();
 const ProdsProvider = ({ children }) => {
   const [prods, setProds] = useState([]);
   const [prodId, setProdId] = useState([]);
-
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const response = await fetch(`${URLBACK}/api/products`);
+        const token = localStorage.getItem("token");
+        const response = await fetch(`${URLBACK}/api/products`, {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
 
         if (data) {

@@ -20,7 +20,7 @@ const CardList = () => {
     >
       {prods.map((prod) => (
         <div key={prod._id}>
-          <Cards  product={prod} prodId={prodId} />
+          <Cards product={prod} prodId={prodId} />
         </div>
       ))}
     </Container>
