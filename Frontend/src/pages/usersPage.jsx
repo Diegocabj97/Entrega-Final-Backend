@@ -46,15 +46,9 @@ const UsersPage = () => {
           },
           credentials: "include",
         });
-
-        if (!response.ok) {
-          console.log("Usted no tiene permisos necesarios");
-        }
-
         const data = await response.json();
         const usersData = data.mensaje;
         setUsers(usersData);
-        console.log("haciendo fetch...");
       } catch (error) {
         console.error("Error al obtener los usuarios:", error);
       }
@@ -72,7 +66,6 @@ const UsersPage = () => {
     try {
       const token = getCookieValue("jwtCookie");
       if (!token) {
-        console.log("Debes iniciar sesión!");
         navigate("/login");
       } else {
         const response = await fetch(`${URLBACK}/api/users/${userId}`, {

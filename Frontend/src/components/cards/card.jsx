@@ -47,7 +47,6 @@ const Cards = ({ product }) => {
       const cartId = localStorage.getItem("cartId");
       const token = localStorage.getItem("token");
       if (cartId === undefined) {
-        console.log("Debes iniciar sesión!");
         navigate("/login");
       } else {
         const response = await fetch(

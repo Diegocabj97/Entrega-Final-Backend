@@ -22,8 +22,6 @@ const ProdsProvider = ({ children }) => {
 
         if (data) {
           setProds(data.payload.docs);
-        } else {
-          console.log({ error: "Productos no encontrados" });
         }
       } catch (error) {
         console.error("Error al realizar la solicitud:", error);
