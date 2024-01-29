@@ -13,12 +13,12 @@ const CartItems = () => {
   const navigate = useNavigate();
   const createTicket = async () => {
     const idCart = localStorage.getItem("cartId");
-    const userEmail = localStorage.getItem("userData");
+    const userEmail = localStorage.getItem("userEmail");
     const response = await fetch(`${URLBACK}/api/carts/${idCart}/purchase`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
-        "user-email": userEmail.email,
+        "user-email": userEmail,
       },
     });
     if (response.status === 200) {

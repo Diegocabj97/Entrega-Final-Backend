@@ -39,6 +39,7 @@ const loginPage = () => {
       setUser(JSON.stringify(datos.userInfo));
       setUserId(JSON.stringify(datos.userInfo._id));
       localStorage.setItem("userData", JSON.stringify(datos.userInfo));
+      localStorage.setItem("userEmail", JSON.stringify(datos.userInfo.email));
       const { token } = datos;
       const idCart = JSON.parse(datos.cart);
       setCartId(idCart);
@@ -51,7 +52,6 @@ const loginPage = () => {
 
       navigate("/");
       alert("Has iniciado sesión!");
-
     } else if (response.status === 401) {
       alert("Usuario no existente");
     }
