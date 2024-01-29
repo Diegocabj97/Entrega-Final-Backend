@@ -18,7 +18,7 @@ const CartItems = () => {
       method: "GET",
       headers: {
         "Content-type": "application/json",
-        "user-email": userEmail,
+        "user-email": userEmail.email,
       },
     });
     if (response.status === 200) {
