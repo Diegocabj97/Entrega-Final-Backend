@@ -31,6 +31,7 @@ const CartItems = () => {
       },
     });
     if (response.status === 200) {
+      alert("Muchas gracias por su compra. Recibirá un mail con los detalles.");
       navigate("/");
     }
   };

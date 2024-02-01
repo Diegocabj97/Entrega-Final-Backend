@@ -19,7 +19,7 @@ const ProductsPage = () => {
   const handleIndexClick = () => {
     navigate("/");
   };
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
