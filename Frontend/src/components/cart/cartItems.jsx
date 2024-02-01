@@ -91,11 +91,6 @@ const CartItems = () => {
       {cart.map((cartProduct) => (
         <Grid key={cartProduct._id._id} item xs={6} md={3}>
           <div className="cartItem">
-            <img
-              className="cartItemImg"
-              src={cartProduct._id}
-              alt="products-card"
-            />
             <div className="cartItemBody">
               <h3 className="cartItemName">{cartProduct._id.title}</h3>
               <h4 className="cartItemPrice">${cartProduct._id.price}</h4>

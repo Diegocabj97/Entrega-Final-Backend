@@ -11,7 +11,7 @@ import { ProdsProvider } from "./context/prodsContext.jsx";
 import DetailPage from "./pages/detailPage.jsx";
 import ProductsPage from "./pages/productsPage.jsx";
 import UsersPage from "./pages/usersPage.jsx";
-import { UserContext, UserProvider } from "./context/userContext.jsx";
+import { UserProvider } from "./context/userContext.jsx";
 export const URLBACK =
   import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
