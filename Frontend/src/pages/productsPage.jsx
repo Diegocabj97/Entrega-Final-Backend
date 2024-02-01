@@ -5,6 +5,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Navbar from "../components/navbar/navbar.jsx";
 import RestoreIcon from "@mui/icons-material/Restore";
 import { useNavigate } from "react-router-dom";
+import getCookieValue from "../utils/getCookieValue.jsx";
 
 const ProductsPage = () => {
   const hasCookie = () => {
@@ -18,16 +19,7 @@ const ProductsPage = () => {
   const handleIndexClick = () => {
     navigate("/");
   };
-  const getCookieValue = (name) => {
-    const cookies = document.cookie.split(";");
-    for (const cookie of cookies) {
-      const [cookieName, cookieValue] = cookie.split("=").map((c) => c.trim());
-      if (cookieName === name) {
-        return cookieValue;
-      }
-    }
-    return null;
-  };
+  
   const navigate = useNavigate();
 
   useEffect(() => {

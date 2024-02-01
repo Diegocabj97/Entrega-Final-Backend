@@ -6,11 +6,19 @@ import { URLBACK } from "../../App.jsx";
 import "./cartItems.css";
 import { useNavigate } from "react-router-dom";
 import CardList from "../cards/cardList.jsx";
+import getCookieValue from "../../utils/getCookieValue.jsx";
+import { UserContext } from "../../context/userContext.jsx";
 
 const CartItems = () => {
   const { cart, cartId, setCartId, setCart, fetchCart } =
     useContext(CartContext);
+
+  const { user } = useContext(UserContext);
+  const currentUser = JSON.parse(user);
+
   const navigate = useNavigate();
+
+  const token = getCookieValue("jwtCookie");
   const createTicket = async () => {
     const idCart = localStorage.getItem("cartId");
     const userEmail = localStorage.getItem("userEmail");
@@ -19,6 +27,7 @@ const CartItems = () => {
       headers: {
         "Content-type": "application/json",
         "user-email": userEmail,
+        authorization: `${token}`,
       },
     });
     if (response.status === 200) {
@@ -27,9 +36,17 @@ const CartItems = () => {
   };
   useEffect(() => {
     const idCart = localStorage.getItem("cartId");
+    const userRole = currentUser.role;
     const fetchCart = async () => {
       try {
-        const response = await fetch(`${URLBACK}/api/carts/${idCart}`);
+        const response = await fetch(`${URLBACK}/api/carts/${idCart}`, {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            authorization: `Bearer ${token}`,
+            role: userRole,
+          },
+        });
         if (!response.ok) {
           throw new Error("Error al obtener el carrito con FETCH");
         }
@@ -76,7 +93,7 @@ const CartItems = () => {
           <div className="cartItem">
             <img
               className="cartItemImg"
-              src={cartProduct._id.thumbnail}
+              src={cartProduct._id}
               alt="products-card"
             />
             <div className="cartItemBody">

@@ -10,6 +10,7 @@ import { URLBACK } from "../../App.jsx";
 import { useNavigate } from "react-router-dom";
 import { Grid, IconButton, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import getCookieValue from "../../utils/getCookieValue.jsx";
 
 const Cards = ({ product }) => {
   const { cart, setCart, cartId, fetchCart } = useContext(CartContext);
@@ -45,7 +46,9 @@ const Cards = ({ product }) => {
   const addToCart = async (product) => {
     try {
       const cartId = localStorage.getItem("cartId");
-      const token = localStorage.getItem("token");
+      const token = getCookieValue("jwtCookie");
+      const user = localStorage.getItem("userData");
+      const userRole = JSON.parse(user).role;
       if (cartId === undefined) {
         navigate("/login");
       } else {
@@ -56,6 +59,7 @@ const Cards = ({ product }) => {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
+              role: userRole,
             },
             body: JSON.stringify(product),
           }
@@ -74,7 +78,6 @@ const Cards = ({ product }) => {
   return (
     <div>
       <Card sx={{ margin: "20px", minWidth: 220, maxWidth: 345 }}>
-        
         <CardContent sx={{ height: 120 }}>
           <Typography gutterBottom variant="h5" component="div">
             {product.title}

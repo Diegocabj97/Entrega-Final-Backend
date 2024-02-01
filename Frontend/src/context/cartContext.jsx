@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { URLBACK } from "../App.jsx";
+import getCookieValue from "../utils/getCookieValue.jsx";
 
 const CartContext = createContext();
 
@@ -10,7 +11,17 @@ const CartProvider = ({ children }) => {
   const fetchCart = async () => {
     try {
       const cartId = localStorage.getItem("cartId");
-      const response = await fetch(`${URLBACK}/api/carts/${cartId}`);
+      const user = localStorage.getItem("userData");
+      const userRole = JSON.parse(user).role;
+      const token = getCookieValue("jwtCookie");
+      const response = await fetch(`${URLBACK}/api/carts/${cartId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+          role: userRole,
+        },
+      });
       if (!response.ok) {
         throw new Error("Error al obtener el carrito con FETCH");
       }

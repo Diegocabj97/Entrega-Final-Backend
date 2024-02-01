@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import RestoreIcon from "@mui/icons-material/Restore";
 import { CartContext } from "../context/cartContext.jsx";
 import CartItems from "../components/cart/cartItems.jsx";
+import getCookieValue from "../utils/getCookieValue.jsx";
 
 const CartPage = () => {
   const { cart, setCart, cartId, fetchCart } = useContext(CartContext);
@@ -21,16 +22,6 @@ const CartPage = () => {
   };
   const hasCartItems = cart && cart.length > 0;
 
-  const getCookieValue = (name) => {
-    const cookies = document.cookie.split(";");
-    for (const cookie of cookies) {
-      const [cookieName, cookieValue] = cookie.split("=").map((c) => c.trim());
-      if (cookieName === name) {
-        return cookieValue;
-      }
-    }
-    return null;
-  };
   const navigate = useNavigate();
   const handleIndexClick = () => {
     navigate("/");
