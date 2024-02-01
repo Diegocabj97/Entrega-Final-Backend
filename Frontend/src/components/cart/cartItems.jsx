@@ -85,43 +85,42 @@ const CartItems = () => {
       console.error("Error al comunicarse con el servidor:", error);
     }
   };
-
   return (
-    <Grid container spacing={2}>
-      {cart.map((cartProduct) => (
-        <Grid key={cartProduct._id._id} item xs={6} md={3}>
-          <div className="cartItem">
-            <div className="cartItemBody">
-              <h3 className="cartItemName">{cartProduct._id.title}</h3>
-              <h4 className="cartItemPrice">${cartProduct._id.price}</h4>
-              <p className="cartItemQuantity">
-                Cantidad: {cartProduct.quantity}
-              </p>
+    <div>
+      <Grid container spacing={2}>
+        {cart.map((cartProduct) => (
+          <Grid key={cartProduct._id._id} item xs={6} md={3}>
+            <div className="cartItem">
+              <div className="cartItemBody">
+                <h3 className="cartItemName">{cartProduct._id.title}</h3>
+                <h4 className="cartItemPrice">${cartProduct._id.price}</h4>
+                <p className="cartItemQuantity">
+                  Cantidad: {cartProduct.quantity}
+                </p>
+              </div>
+              <div>
+                <CloseIcon
+                  onClick={() => removeProductFromCart(cartProduct._id._id)}
+                  className="rmvBtn"
+                  sx={{
+                    backgroundColor: "rgb(255, 116, 116);",
+                    marginBottom: "-50px",
+                  }}
+                />
+              </div>
             </div>
-            <div>
-              <CloseIcon
-                onClick={() => removeProductFromCart(cartProduct._id._id)}
-                className="rmvBtn"
-                sx={{
-                  backgroundColor: "rgb(255, 116, 116);",
-                  marginBottom: "-50px",
-                }}
-              />
-            </div>
-          </div>
-        </Grid>
-      ))}
-      <Grid item xs={12}>
-        <Button
-          onClick={createTicket}
-          disabled={cart.length === 0}
-          variant="contained"
-          color="success"
-        >
-          Finalizar Compra
-        </Button>
+          </Grid>
+        ))}
       </Grid>
-    </Grid>
+      <Button
+        onClick={createTicket}
+        disabled={cart.length === 0}
+        variant="contained"
+        color="success"
+      >
+        Finalizar Compra
+      </Button>
+    </div>
   );
 };
 
