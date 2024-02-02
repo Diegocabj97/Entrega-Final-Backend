@@ -34,6 +34,9 @@ const CartItems = () => {
       alert("Muchas gracias por su compra. Recibirá un mail con los detalles.");
       navigate("/");
     }
+    if (response.status === 401) {
+      alert("Un elemento no tiene stock suficiente para finalizar la compra!");
+    }
   };
   useEffect(() => {
     const idCart = localStorage.getItem("cartId");

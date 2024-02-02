@@ -161,9 +161,63 @@ const UsersPage = () => {
           </div>
         ) : (
           <div>
+            <div>Estos son todos los usuarios</div>
+            <Container
+              sx={{
+                height: "100vh",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                margin: "50px",
+              }}
+              fixed
+            >
+              {users.map((user) => (
+                <Card
+                  key={user._id}
+                  sx={{
+                    margin: "20px",
+                    minWidth: 220,
+                    maxWidth: 345,
+                    maxHeight: 400,
+                  }}
+                >
+                  <CardMedia
+                    sx={{ height: 140 }}
+                    image="/static/images/cards/contemplative-reptile.jpg"
+                    title="green iguana"
+                  />
+                  <CardContent sx={{ height: 120 }}>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {user.first_name} {user.last_name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Email: {user.email}
+                    </Typography>
+                  </CardContent>
+                  <CardActions
+                    sx={{
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Button
+                      onClick={() => {
+                        handleClick(user._id);
+                      }}
+                      variant="contained"
+                      color="success"
+                    >
+                      Eliminar usuario
+                    </Button>
+                  </CardActions>
+                </Card>
+              ))}
+            </Container>
+          </div>
+          /*  <div>
             <h1>Usted no tiene permisos para ver todos los usuarios</h1>
             <h2>Será redirigido a la pagina de inicio...</h2>
-          </div>
+          </div> */
         )}
       </div>
     </div>

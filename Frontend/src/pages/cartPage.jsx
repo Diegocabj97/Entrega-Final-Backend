@@ -24,7 +24,7 @@ const CartPage = () => {
 
   const navigate = useNavigate();
   const handleIndexClick = () => {
-    navigate("/");
+    navigate("/allprods");
   };
 
   return (
