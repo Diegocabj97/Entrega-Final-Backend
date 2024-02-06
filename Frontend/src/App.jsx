@@ -12,6 +12,7 @@ import DetailPage from "./pages/detailPage.jsx";
 import ProductsPage from "./pages/productsPage.jsx";
 import UsersPage from "./pages/usersPage.jsx";
 import { UserProvider } from "./context/userContext.jsx";
+import { Navbar } from "react-bootstrap";
 export const URLBACK =
   import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 

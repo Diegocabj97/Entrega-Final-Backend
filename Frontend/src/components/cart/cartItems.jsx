@@ -1,7 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { CartContext } from "../../context/cartContext";
 import CloseIcon from "@mui/icons-material/Close";
-import { Button, Grid } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardMedia,
+  Container,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { URLBACK } from "../../App.jsx";
 import "./cartItems.css";
 import { useNavigate } from "react-router-dom";
@@ -90,29 +97,49 @@ const CartItems = () => {
     }
   };
   return (
-    <div>
-      <Grid container spacing={2}>
+    <Container
+      sx={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+      fixed
+    >
+      <Grid
+        container
+        justifyContent="space-evenly"
+        alignItems="center"
+        spacing={4}
+        marginTop="2rem"
+      >
         {cart.map((cartProduct) => (
-          <Grid key={cartProduct._id._id} item xs={6} md={3}>
-            <div className="cartItem">
+          <Grid item key={cartProduct._id._id} xs={12} sm={6} md={4} lg={3}>
+            <Card className="cartItem">
               <div className="cartItemBody">
-                <h3 className="cartItemName">{cartProduct._id.title}</h3>
+                <CardMedia
+                  component="img"
+                  alt="green iguana"
+                  height="200"
+                  image="https://i.ibb.co/5nqB61T/274-16-05-2023-06-05-49-placa-de-video-asus-3070-dual-oc.webp"
+                />
+                <Typography gutterBottom variant="h5" component="div">
+                  {cartProduct._id.title}
+                </Typography>
                 <h4 className="cartItemPrice">${cartProduct._id.price}</h4>
                 <p className="cartItemQuantity">
                   Cantidad: {cartProduct.quantity}
                 </p>
               </div>
-              <div>
-                <CloseIcon
-                  onClick={() => removeProductFromCart(cartProduct._id._id)}
-                  className="rmvBtn"
-                  sx={{
-                    backgroundColor: "rgb(255, 116, 116);",
-                    marginBottom: "-50px",
-                  }}
-                />
-              </div>
-            </div>
+              <CloseIcon
+                onClick={() => removeProductFromCart(cartProduct._id._id)}
+                className="rmvBtn"
+                sx={{
+                  backgroundColor: "rgb(255, 116, 116);",
+                  position: "relative",
+                }}
+              />
+            </Card>
           </Grid>
         ))}
       </Grid>
@@ -121,10 +148,11 @@ const CartItems = () => {
         disabled={cart.length === 0}
         variant="contained"
         color="success"
+        margintop="2rem"
       >
         Finalizar Compra
       </Button>
-    </div>
+    </Container>
   );
 };
 

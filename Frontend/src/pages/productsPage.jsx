@@ -6,7 +6,7 @@ import Navbar from "../components/navbar/navbar.jsx";
 import RestoreIcon from "@mui/icons-material/Restore";
 import { useNavigate } from "react-router-dom";
 import getCookieValue from "../utils/getCookieValue.jsx";
-
+import theme from "../utils/theme.js";
 const ProductsPage = () => {
   const hasCookie = () => {
     return document.cookie
@@ -35,69 +35,54 @@ const ProductsPage = () => {
   }, [navigate]);
   return (
     <div>
-      <Navbar />
-      {hasCookie ? (
-        <BottomNavigation
-          showLabels
-          sx={{
-            alignSelf: "end",
-            justifyContent: "end",
-            width: "10%",
-            backgroundColor: "rgb(206, 206, 206)",
-            borderRadius: "100px",
-          }}
-        >
-          <BottomNavigationAction
-            label="Cart"
-            icon={<ShoppingCartIcon />}
-            onClick={showCart}
-          />
-        </BottomNavigation>
-      ) : (
-        <BottomNavigation
-          showLabels
-          sx={{
-            alignSelf: "end",
-            justifyContent: "end",
-            width: "10%",
-            backgroundColor: "rgb(206, 206, 206)",
-            borderRadius: "100px",
-          }}
-        >
-          <BottomNavigationAction
-            label="Cart"
-            icon={<ShoppingCartIcon />}
-            onClick={showCart}
-          />
-        </BottomNavigation>
-      )}
-
-      <BottomNavigation
-        showLabels
-        sx={{
-          width: "10%",
-          backgroundColor: "rgb(206, 206, 206)",
-          borderRadius: "100px",
-        }}
-      >
-        <BottomNavigationAction
-          label="Volver"
-          icon={<RestoreIcon />}
-          onClick={handleIndexClick}
-        />
-      </BottomNavigation>
-
-      {hasCookie() ? (
-        <div>
-          <h1>Todos los productos!</h1>
-          <CardList></CardList>
-        </div>
-      ) : (
-        <div>
-          <h1>Debes iniciar sesion para ver nuestra lista de productos!</h1>
-          <h2>Serás redireccionado a la pagina de inicio...</h2>
-        </div>
-      )}
+      <div style={{ margin: "auto" }}>
+        <Navbar />
+        {hasCookie() ? (
+          <div>
+            <BottomNavigation
+              showLabels
+              sx={{
+                position: "absolute",
+                justifySelf: "end",
+                width: "7%",
+                right: "20%",
+                backgroundColor: theme.secondaryColor,
+                borderRadius: "100px",
+              }}
+            >
+              <BottomNavigationAction
+                label="Carrito"
+                icon={<ShoppingCartIcon />}
+                onClick={showCart}
+              />
+            </BottomNavigation>{" "}
+            <BottomNavigation
+              showLabels
+              sx={{
+                position: "absolute",
+                justifySelf: "end",
+                width: "7%",
+                right: "30%",
+                backgroundColor: theme.secondaryColor,
+                borderRadius: "100px",
+              }}
+            >
+              <BottomNavigationAction
+                label="Volver"
+                icon={<RestoreIcon />}
+                onClick={handleIndexClick}
+              />
+            </BottomNavigation>
+            <h1>Todos los productos!</h1>
+            <CardList></CardList>
+          </div>
+        ) : (
+          <div>
+            <h1>Debes iniciar sesion para ver nuestra lista de productos!</h1>
+            <h2>Serás redireccionado a la pagina de inicio...</h2>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

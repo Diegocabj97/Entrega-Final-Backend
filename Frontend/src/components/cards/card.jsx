@@ -8,10 +8,10 @@ import Typography from "@mui/material/Typography";
 import { CartContext } from "../../context/cartContext.jsx";
 import { URLBACK } from "../../App.jsx";
 import { useNavigate } from "react-router-dom";
-import { Grid, IconButton, Snackbar } from "@mui/material";
+import { IconButton, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import getCookieValue from "../../utils/getCookieValue.jsx";
-
+import theme from "../../utils/theme.js";
 const Cards = ({ product }) => {
   const { cart, setCart, cartId, fetchCart } = useContext(CartContext);
   const [open, setOpen] = useState(false);
@@ -77,24 +77,54 @@ const Cards = ({ product }) => {
   };
   return (
     <div>
-      <Card sx={{ margin: "20px", minWidth: 220, maxWidth: 345 }}>
-        <CardContent sx={{ height: 120 }}>
-          <Typography gutterBottom variant="h5" component="div">
+      <Card
+        sx={{
+          minWidth: 280,
+          maxWidth: 280,
+          maxHeight: 450,
+          borderRadius: "10px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          boxShadow: "0px 1px 20px 5px rgba(0,0,0,0.12)",
+        }}
+      >
+        <CardContent
+          sx={{ height: "fit-content", padding: "50px", textAlign: "center" }}
+        >
+          <CardMedia
+            component="img"
+            alt="green iguana"
+            height="150"
+            image="https://i.ibb.co/5nqB61T/274-16-05-2023-06-05-49-placa-de-video-asus-3070-dual-oc.webp"
+          />
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            sx={{ padding: "20px", maxHeight: 30 }}
+          >
             {product.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Stock: {product.stock}
           </Typography>
         </CardContent>
-        <CardActions>
+        <CardActions
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            paddingBottom: "20px",
+          }}
+        >
           <Button
+            sx={{ backgroundColor: theme.secondaryColor }}
             onClick={() => {
               handleClick();
               BuyButtonClick();
             }}
             disabled={product.stock === 0}
             variant="contained"
-            color="success"
           >
             Agregar al carrito
           </Button>

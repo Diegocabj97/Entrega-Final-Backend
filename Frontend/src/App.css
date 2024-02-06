@@ -1,12 +1,11 @@
 #root {
   max-width: 1280px;
-  margin: 0 auto;
+  margin: auto;
   text-align: center;
 }
 .App {
   font-family: "Euclid Circ.menuar A", "Poppins";
   font-size: 18px;
-  margin: 0;
   display: grid;
   height: 100vh;
 }

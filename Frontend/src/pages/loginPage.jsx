@@ -10,6 +10,7 @@ import RestoreIcon from "@mui/icons-material/Restore";
 import { CartContext } from "../context/cartContext.jsx";
 import Box from "@mui/material/Box";
 import { UserContext } from "../context/userContext.jsx";
+import theme from "../utils/theme.js";
 const initialState = {
   email: "",
   password: "",
@@ -45,7 +46,7 @@ const loginPage = () => {
       setCartId(idCart);
 
       const cookieOptions = {
-        maxAge: 86400000, // Duración de la cookie en milisegundos (1 día)
+        maxAge: 43200, // Duración de la cookie en segundos (12 hs)
       };
       document.cookie = `jwtCookie=${token}; max-age=${cookieOptions.maxAge}; path=/`;
       document.cookie = `cartId=${idCart}; max-age=${cookieOptions.maxAge}; path=/`;
@@ -66,8 +67,12 @@ const loginPage = () => {
       <BottomNavigation
         showLabels
         sx={{
-          width: "10%",
-          backgroundColor: "rgb(206, 206, 206)",
+          position: "absolute",
+          justifySelf: "end",
+
+          width: "7%",
+          right: "20%",
+          backgroundColor: theme.secondaryColor,
           borderRadius: "100px",
         }}
       >

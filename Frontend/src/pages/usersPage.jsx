@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { URLBACK } from "../App.jsx";
 import {
+  BottomNavigation,
+  BottomNavigationAction,
   Button,
   Card,
   CardActions,
@@ -12,20 +14,22 @@ import {
 import Navbar from "../components/navbar/navbar.jsx";
 import { useNavigate } from "react-router-dom";
 import getCookieValue from "../utils/getCookieValue.jsx";
+import RestoreIcon from "@mui/icons-material/Restore";
+import theme from "../utils/theme.js";
 
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
-
-  const isAdmin = () => {
+  const handleIndexClick = () => {
+    navigate("/");
+  };
+  const IsLoggedIn = () => {
     const userInfo = localStorage.getItem("userData");
-
-    const token = getCookieValue("jwtCookie");
-    const user = JSON.parse(userInfo);
-    if (user && token) {
-      return user.role === "2635JDA";
+    if (userInfo) {
+      return true;
+    } else {
+      return false;
     }
-    return false;
   };
   useEffect(() => {
     const fetchUsers = async () => {
@@ -103,122 +107,93 @@ const UsersPage = () => {
   return (
     <div>
       <Navbar />
-      <div>
-        {isAdmin() === true ? (
-          <div>
-            <div>Estos son todos los usuarios</div>
-            <Container
-              sx={{
-                height: "100vh",
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                margin: "50px",
-              }}
-              fixed
-            >
-              {users.map((user) => (
-                <Card
-                  key={user._id}
-                  sx={{
-                    margin: "20px",
-                    minWidth: 220,
-                    maxWidth: 345,
-                    maxHeight: 400,
-                  }}
-                >
-                  <CardMedia
-                    sx={{ height: 140 }}
-                    image="/static/images/cards/contemplative-reptile.jpg"
-                    title="green iguana"
-                  />
-                  <CardContent sx={{ height: 120 }}>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {user.first_name} {user.last_name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Email: {user.email}
-                    </Typography>
-                  </CardContent>
-                  <CardActions
+
+      <div style={{ margin: "auto" }}>
+        <div>
+          {IsLoggedIn() === true ? (
+            <div>
+              <BottomNavigation
+                showLabels
+                sx={{
+                  position: "absolute",
+                  justifySelf: "end",
+
+                  width: "7%",
+                  right: "20%",
+                  backgroundColor: theme.secondaryColor,
+                  borderRadius: "100px",
+                }}
+              >
+                <BottomNavigationAction
+                  label="Volver"
+                  icon={<RestoreIcon />}
+                  onClick={handleIndexClick}
+                />
+              </BottomNavigation>
+              <div>Estos son todos los usuarios</div>
+              <Container
+                sx={{
+                  height: "100vh",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  margin: "50px",
+                }}
+                fixed
+              >
+                {users.map((user) => (
+                  <Card
+                    key={user._id}
                     sx={{
-                      justifyContent: "center",
+                      margin: "20px",
+                      minWidth: 220,
+                      maxWidth: 345,
+                      maxHeight: 400,
                     }}
                   >
-                    <Button
-                      onClick={() => {
-                        handleClick(user._id);
+                    <CardMedia
+                      sx={{ height: 140 }}
+                      image="/static/images/cards/contemplative-reptile.jpg"
+                      title="green iguana"
+                    />
+                    <CardContent sx={{ height: 120 }}>
+                      <Typography gutterBottom variant="h5" component="div">
+                        {user.first_name} {user.last_name}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Email: {user.email}
+                      </Typography>
+                    </CardContent>
+                    <CardActions
+                      sx={{
+                        justifyContent: "center",
                       }}
-                      variant="contained"
-                      color="success"
                     >
-                      Eliminar usuario
-                    </Button>
-                  </CardActions>
-                </Card>
-              ))}
-            </Container>
-          </div>
-        ) : (
-          <div>
-            <div>Estos son todos los usuarios</div>
-            <Container
-              sx={{
-                height: "100vh",
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                margin: "50px",
-              }}
-              fixed
-            >
-              {users.map((user) => (
-                <Card
-                  key={user._id}
-                  sx={{
-                    margin: "20px",
-                    minWidth: 220,
-                    maxWidth: 345,
-                    maxHeight: 400,
-                  }}
-                >
-                  <CardMedia
-                    sx={{ height: 140 }}
-                    image="/static/images/cards/contemplative-reptile.jpg"
-                    title="green iguana"
-                  />
-                  <CardContent sx={{ height: 120 }}>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {user.first_name} {user.last_name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Email: {user.email}
-                    </Typography>
-                  </CardContent>
-                  <CardActions
-                    sx={{
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Button
-                      onClick={() => {
-                        handleClick(user._id);
-                      }}
-                      variant="contained"
-                      color="success"
-                    >
-                      Eliminar usuario
-                    </Button>
-                  </CardActions>
-                </Card>
-              ))}
-            </Container>
-          </div>
-          /*  <div>
+                      <Button
+                        onClick={() => {
+                          handleClick(user._id);
+                        }}
+                        variant="contained"
+                        color="success"
+                      >
+                        Eliminar usuario
+                      </Button>
+                    </CardActions>
+                  </Card>
+                ))}
+              </Container>
+            </div>
+          ) : (
+            <div>
+              <h1>Usted no tiene permisos para ver todos los usuarios</h1>
+              <h2>Serás redireccionado a la pagina de inicio...</h2>
+            </div>
+            /*  <div>
             <h1>Usted no tiene permisos para ver todos los usuarios</h1>
             <h2>Será redirigido a la pagina de inicio...</h2>
           </div> */
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

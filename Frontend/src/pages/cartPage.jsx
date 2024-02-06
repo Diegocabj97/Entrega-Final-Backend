@@ -1,11 +1,11 @@
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import RestoreIcon from "@mui/icons-material/Restore";
 import { CartContext } from "../context/cartContext.jsx";
 import CartItems from "../components/cart/cartItems.jsx";
 import getCookieValue from "../utils/getCookieValue.jsx";
+import theme from "../utils/theme.js";
 
 const CartPage = () => {
   const { cart, setCart, cartId, fetchCart } = useContext(CartContext);
@@ -32,8 +32,12 @@ const CartPage = () => {
       <BottomNavigation
         showLabels
         sx={{
-          width: "10%",
-          backgroundColor: "rgb(206, 206, 206)",
+          position: "absolute",
+          justifySelf: "end",
+
+          width: "7%",
+          right: "20%",
+          backgroundColor: theme.secondaryColor,
           borderRadius: "100px",
         }}
       >
