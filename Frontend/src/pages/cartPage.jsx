@@ -36,8 +36,8 @@ const CartPage = () => {
           justifySelf: "end",
 
           width: "7%",
-          right: "20%",
-          backgroundColor: theme.secondaryColor,
+          left: "20%",
+          backgroundColor: theme.primaryColor,
           borderRadius: "100px",
         }}
       >

@@ -33,7 +33,7 @@ a {
 }
 
 .menu li:hover .submenu {
-  height: 85px;
+  height: 55px;
 }
 
 .menu > li:hover > a {
@@ -52,8 +52,8 @@ a {
   display: flex;
   justify-content: center;
   align-items: stretch;
-  width: 68.9%;
-  background-color: #802cfff6;
+  width: 74.3%;
+  background-color: #8739f9;
   height: 0;
   line-height: 40px;
   box-sizing: border-box;
@@ -98,4 +98,11 @@ a {
   transition: all 0.2s ease-in-out;
   scale: 0 0;
   visibility: hidden;
+}
+.MuiSvgIcon-fontSizeMedium {
+  color: #f2f5f5e5;
+}
+.MuiBottomNavigationAction-label {
+  color: white;
+  text-decoration: none;
 }

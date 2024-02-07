@@ -86,7 +86,7 @@ const Cards = ({ product }) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          boxShadow: "0px 1px 20px 5px rgba(0,0,0,0.12)",
+          boxShadow: "0px 0px 25px 0px rgba(15, 0, 90, 0.9)",
         }}
       >
         <CardContent

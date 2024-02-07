@@ -107,37 +107,17 @@ const UsersPage = () => {
   return (
     <div>
       <Navbar />
-
       <div style={{ margin: "auto" }}>
         <div>
           {IsLoggedIn() === true ? (
             <div>
-              <BottomNavigation
-                showLabels
-                sx={{
-                  position: "absolute",
-                  justifySelf: "end",
-
-                  width: "7%",
-                  right: "20%",
-                  backgroundColor: theme.secondaryColor,
-                  borderRadius: "100px",
-                }}
-              >
-                <BottomNavigationAction
-                  label="Volver"
-                  icon={<RestoreIcon />}
-                  onClick={handleIndexClick}
-                />
-              </BottomNavigation>
-              <div>Estos son todos los usuarios</div>
+              <h1>Estos son todos los usuarios</h1>
               <Container
                 sx={{
                   height: "100vh",
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "center",
-                  margin: "50px",
                 }}
                 fixed
               >
@@ -149,6 +129,7 @@ const UsersPage = () => {
                       minWidth: 220,
                       maxWidth: 345,
                       maxHeight: 400,
+                      boxShadow: "0px 0px 25px 0px rgba(15, 0, 90, 0.9)",
                     }}
                   >
                     <CardMedia

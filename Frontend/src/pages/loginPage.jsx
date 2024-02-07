@@ -69,10 +69,9 @@ const loginPage = () => {
         sx={{
           position: "absolute",
           justifySelf: "end",
-
           width: "7%",
           right: "20%",
-          backgroundColor: theme.secondaryColor,
+          backgroundColor: theme.primaryColor,
           borderRadius: "100px",
         }}
       >

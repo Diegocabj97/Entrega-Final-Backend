@@ -22,9 +22,7 @@ const indexPage = () => {
   const handleLogoutClick = () => {
     navigate("/logout");
   };
-  const showCart = () => {
-    navigate("/cart");
-  };
+
   const hasCookie = () =>
     document.cookie
       .split(";")
@@ -37,24 +35,6 @@ const indexPage = () => {
         <Stack marginTop={3} alignItems="center" spacing={3} direction="column">
           {hasCookie() ? (
             <div>
-              <BottomNavigation
-                showLabels
-                sx={{
-                  position: "absolute",
-                  justifySelf: "end",
-                  width: "7%",
-                  top: "100px",
-                  right: "20%",
-                  backgroundColor: theme.secondaryColor,
-                  borderRadius: "100px",
-                }}
-              >
-                <BottomNavigationAction
-                  label="Cart"
-                  icon={<ShoppingCartIcon />}
-                  onClick={showCart}
-                />
-              </BottomNavigation>
               <Button
                 onClick={handleLogoutClick}
                 variant="contained"

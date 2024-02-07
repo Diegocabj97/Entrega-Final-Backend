@@ -1,6 +1,7 @@
 const theme = {
   primaryColor: "#8739F9",
   secondaryColor: "#37B9F1",
+  navButtonColor: "#5ac5f3f3",
   backgroundColor: "#F2F5F5",
   textFontColor: "#565360",
   labelFontColor: "#908E9B",
