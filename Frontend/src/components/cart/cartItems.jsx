@@ -12,24 +12,18 @@ import {
 import { URLBACK } from "../../App.jsx";
 import "./cartItems.css";
 import { useNavigate } from "react-router-dom";
-import CardList from "../cards/cardList.jsx";
 import getCookieValue from "../../utils/getCookieValue.jsx";
 import { UserContext } from "../../context/userContext.jsx";
+import { useAuth } from "../../context/authContext.jsx";
 
 const CartItems = () => {
-  const { cart, cartId, setCartId, setCart, fetchCart } =
-    useContext(CartContext);
-
-  const { user } = useContext(UserContext);
-  const currentUser = JSON.parse(user);
-
+  const { cart, fetchCart, setCart } = useContext(CartContext);
+  const { token } = useAuth();
+  const cartId = token.cart;
   const navigate = useNavigate();
-
-  const token = getCookieValue("jwtCookie");
   const createTicket = async () => {
-    const idCart = localStorage.getItem("cartId");
-    const userEmail = localStorage.getItem("userEmail");
-    const response = await fetch(`${URLBACK}/api/carts/${idCart}/purchase`, {
+    const userEmail = token.email;
+    const response = await fetch(`${URLBACK}/api/carts/${cartId}/purchase`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -46,33 +40,9 @@ const CartItems = () => {
     }
   };
   useEffect(() => {
-    const idCart = localStorage.getItem("cartId");
-    const userRole = currentUser.role;
-    const fetchCart = async () => {
-      try {
-        const response = await fetch(`${URLBACK}/api/carts/${idCart}`, {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            authorization: `Bearer ${token}`,
-            role: userRole,
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Error al obtener el carrito con FETCH");
-        }
-
-        const data = await response.json();
-        const cartData = data.payload.products;
-        setCartId(idCart);
-        setCart(cartData);
-      } catch (error) {
-        console.error("Error al obtener el carrito:", error);
-      }
-    };
-
-    fetchCart();
-  }, [cartId, setCartId, setCart]);
+    const intervalId = setInterval(fetchCart, 2000);
+    return () => clearInterval(intervalId);
+  }, [cart]);
 
   const removeProductFromCart = async (productId) => {
     try {

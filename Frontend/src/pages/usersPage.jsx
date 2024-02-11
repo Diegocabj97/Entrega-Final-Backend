@@ -8,46 +8,30 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  CircularProgress,
   Container,
   Typography,
 } from "@mui/material";
 import Navbar from "../components/navbar/navbar.jsx";
 import { useNavigate } from "react-router-dom";
-import getCookieValue from "../utils/getCookieValue.jsx";
-import RestoreIcon from "@mui/icons-material/Restore";
-import theme from "../utils/theme.js";
+import { useAuth } from "../context/authContext.jsx";
+import HasCookie from "../utils/hasCookie.jsx";
 
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { token } = useAuth();
   const navigate = useNavigate();
-  const handleIndexClick = () => {
-    navigate("/");
-  };
-  const IsLoggedIn = () => {
-    const userInfo = localStorage.getItem("userData");
-    if (userInfo) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const token = getCookieValue("jwtCookie");
-        const user = localStorage.getItem("userData");
-        if (!user) {
-          throw new Error("No se pudo obtener el token.");
-        }
-
-        const userRole = JSON.parse(user).role;
-
         const response = await fetch(`${URLBACK}/api/users`, {
           method: "GET",
           headers: {
             "Content-type": "application/json",
             Authorization: `Bearer ${token}`,
-            role: userRole,
+            role: token.role,
           },
           credentials: "include",
         });
@@ -69,7 +53,6 @@ const UsersPage = () => {
   };
   const deleteUser = async (userId) => {
     try {
-      const token = getCookieValue("jwtCookie");
       if (!token) {
         navigate("/login");
       } else {
@@ -95,11 +78,13 @@ const UsersPage = () => {
   useEffect(() => {
     // Redirige a la página de inicio después de 5 segundos si no hay usuario
     const redirectIfNoUser = setTimeout(() => {
-      const token = getCookieValue("jwtCookie");
       if (!token) {
         navigate("/");
+      } else {
+        // Desactiva el loader después de 1 segundo
+        setLoading(false);
       }
-    }, 2000);
+    }, 500);
 
     return () => clearTimeout(redirectIfNoUser);
   }, [navigate]);
@@ -109,61 +94,65 @@ const UsersPage = () => {
       <Navbar />
       <div style={{ margin: "auto" }}>
         <div>
-          {IsLoggedIn() === true ? (
-            <div>
-              <h1>Estos son todos los usuarios</h1>
-              <Container
-                sx={{
-                  height: "100vh",
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                }}
-                fixed
-              >
-                {users.map((user) => (
-                  <Card
-                    key={user._id}
-                    sx={{
-                      margin: "20px",
-                      minWidth: 220,
-                      maxWidth: 345,
-                      maxHeight: 400,
-                      boxShadow: "0px 0px 25px 0px rgba(15, 0, 90, 0.9)",
-                    }}
-                  >
-                    <CardMedia
-                      sx={{ height: 140 }}
-                      image="/static/images/cards/contemplative-reptile.jpg"
-                      title="green iguana"
-                    />
-                    <CardContent sx={{ height: 120 }}>
-                      <Typography gutterBottom variant="h5" component="div">
-                        {user.first_name} {user.last_name}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        Email: {user.email}
-                      </Typography>
-                    </CardContent>
-                    <CardActions
+          {HasCookie() ? (
+            loading ? (
+              <CircularProgress size={48} />
+            ) : (
+              <div>
+                <h1>Estos son todos los usuarios</h1>
+                <Container
+                  sx={{
+                    height: "100vh",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                  }}
+                  fixed
+                >
+                  {users.map((user) => (
+                    <Card
+                      key={user._id}
                       sx={{
-                        justifyContent: "center",
+                        margin: "20px",
+                        minWidth: 220,
+                        maxWidth: 345,
+                        maxHeight: 400,
+                        boxShadow: "0px 0px 25px 0px rgba(15, 0, 90, 0.9)",
                       }}
                     >
-                      <Button
-                        onClick={() => {
-                          handleClick(user._id);
+                      <CardMedia
+                        sx={{ height: 140 }}
+                        image="/static/images/cards/contemplative-reptile.jpg"
+                        title="green iguana"
+                      />
+                      <CardContent sx={{ height: 120 }}>
+                        <Typography gutterBottom variant="h5" component="div">
+                          {user.first_name} {user.last_name}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Email: {user.email}
+                        </Typography>
+                      </CardContent>
+                      <CardActions
+                        sx={{
+                          justifyContent: "center",
                         }}
-                        variant="contained"
-                        color="success"
                       >
-                        Eliminar usuario
-                      </Button>
-                    </CardActions>
-                  </Card>
-                ))}
-              </Container>
-            </div>
+                        <Button
+                          onClick={() => {
+                            handleClick(user._id);
+                          }}
+                          variant="contained"
+                          color="success"
+                        >
+                          Eliminar usuario
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  ))}
+                </Container>
+              </div>
+            )
           ) : (
             <div>
               <h1>Usted no tiene permisos para ver todos los usuarios</h1>

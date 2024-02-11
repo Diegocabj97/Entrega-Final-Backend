@@ -12,8 +12,10 @@ import { IconButton, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import getCookieValue from "../../utils/getCookieValue.jsx";
 import theme from "../../utils/theme.js";
+import { useAuth } from "../../context/authContext.jsx";
 const Cards = ({ product }) => {
-  const { cart, setCart, cartId, fetchCart } = useContext(CartContext);
+  const { cart, setCart, fetchCart } = useContext(CartContext);
+  const { token } = useAuth();
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {
@@ -45,30 +47,32 @@ const Cards = ({ product }) => {
 
   const addToCart = async (product) => {
     try {
-      const cartId = localStorage.getItem("cartId");
-      const token = getCookieValue("jwtCookie");
-      const user = localStorage.getItem("userData");
-      const userRole = JSON.parse(user).role;
-      if (cartId === undefined) {
+      if (!token) {
+        // Si no hay token, redirige a la página de inicio
         navigate("/login");
       } else {
-        const response = await fetch(
-          `${URLBACK}/api/carts/${cartId}/product/${product._id}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-              role: userRole,
-            },
-            body: JSON.stringify(product),
+        const cartId = token.cart;
+        if (!cartId) {
+          navigate("/login");
+        } else {
+          const response = await fetch(
+            `${URLBACK}/api/carts/${cartId}/product/${product._id}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                role: token.role,
+              },
+              body: JSON.stringify(product),
+            }
+          );
+          if (response.ok) {
+            // Actualizar el carrito en el estado local
+            setCart((prevCart) => [...prevCart, { ...product, quantity: 1 }]);
+            // Actualizar el carrito en el servidor
+            fetchCart(cartId);
           }
-        );
-        if (response.ok) {
-          // Actualizar el carrito en el estado local
-          setCart((prevCart) => [...prevCart, { ...product, quantity: 1 }]);
-          // Actualizar el carrito en el servidor
-          fetchCart(cartId);
         }
       }
     } catch (error) {

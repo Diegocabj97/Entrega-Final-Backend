@@ -2,27 +2,23 @@ import { Button, Stack } from "@mui/material";
 import React, { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/cartContext";
+import { useAuth } from "../context/authContext";
 
 const LogoutPage = () => {
-  const { setCart } = useContext(CartContext);
+  const { logout } = useAuth();
   const navigate = useNavigate();
-  const deleteCookie = (name) => {
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-  };
 
   // Llama a la función al cargar la página de logout
   useEffect(() => {
-    setCart([]);
-    deleteCookie("jwtCookie");
-    deleteCookie("cartId");
-    localStorage.removeItem("cartId");
-    localStorage.removeItem("token");
-    localStorage.removeItem("cart");
-    localStorage.removeItem("userData");
-    localStorage.removeItem("userEmail");
-    setCart([""]);
-    navigate("/logout");
-  }, []);
+    const handleLogout = async () => {
+      await logout();
+      // Eliminar cookie y redirigir a la página de inicio
+      document.cookie =
+        "jwtCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      navigate("/");
+    };
+    handleLogout();
+  }, [logout, navigate]);
   const handleIndexClick = () => {
     navigate("/");
   };

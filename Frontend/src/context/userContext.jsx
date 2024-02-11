@@ -9,7 +9,7 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const userData = localStorage.getItem("userData");
+        const userData = token;
         setUser(userData);
         if (userData) {
           setUserId(userData.id);

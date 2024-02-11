@@ -1,60 +1,64 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
-import "./registerPage.css";
 import Button from "@mui/material/Button";
-import { URLBACK } from "../App.jsx";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import RestoreIcon from "@mui/icons-material/Restore";
-import { CartContext } from "../context/cartContext.jsx";
 import Box from "@mui/material/Box";
-import { UserContext } from "../context/userContext.jsx";
 import theme from "../utils/theme.js";
+import { useAuth } from "../context/authContext.jsx";
+
 const initialState = {
   email: "",
   password: "",
 };
 
-const loginPage = () => {
-  const { setCartId } = useContext(CartContext);
-  const { user, userId, setUser, setUserId } = useContext(UserContext);
+const LoginPage = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
-  const handleIndexClick = () => {
-    navigate("/");
-  };
+
   const [values, setValues] = useState(initialState);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const isValidEmail = (email) => {
+    // Expresión regular para validar el formato de correo electrónico
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`${URLBACK}/api/session/login`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-        credentials: "include",
-      },
-      body: JSON.stringify(values),
-    });
-    if (response.status == 200) {
-      setValues(initialState);
-      const datos = await response.json();
-      setUser(JSON.stringify(datos.userInfo));
-      setUserId(JSON.stringify(datos.userInfo._id));
-      localStorage.setItem("userData", JSON.stringify(datos.userInfo));
-      localStorage.setItem("userEmail", JSON.stringify(datos.userInfo.email));
-      const { token } = datos;
-      const idCart = JSON.parse(datos.cart);
-      setCartId(idCart);
+    const { email, password } = values;
 
-      const cookieOptions = {
-        maxAge: 43200, // Duración de la cookie en segundos (12 hs)
-      };
-      document.cookie = `jwtCookie=${token}; max-age=${cookieOptions.maxAge}; path=/`;
-      document.cookie = `cartId=${idCart}; max-age=${cookieOptions.maxAge}; path=/`;
+    // Validaciones
+    if (!email || !password) {
+      setError("Todos los campos son obligatorios");
+      return;
+    }
 
-      navigate("/");
-      alert("Has iniciado sesión!");
-    } else if (response.status === 401) {
-      alert("Usuario no existente");
+    if (!isValidEmail(email)) {
+      setError("Ingrese un correo electrónico válido");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await login(email, password);
+      navigate("/allprods");
+      window.location.reload();
+      navigate("/allprods");
+    } catch (error) {
+      // Verifica si el error es por credenciales no válidas
+      if (error.message.includes("Unauthorized")) {
+        setError("Credenciales no válidas. Verifique su email y contraseña.");
+      } else {
+        setError(error.message);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,6 +66,7 @@ const loginPage = () => {
     const { value, name } = e.target;
     setValues({ ...values, [name]: value });
   };
+
   return (
     <div className="regPage">
       <BottomNavigation
@@ -78,14 +83,15 @@ const loginPage = () => {
         <BottomNavigationAction
           label="Volver"
           icon={<RestoreIcon />}
-          onClick={handleIndexClick}
+          onClick={() => navigate("/")}
         />
       </BottomNavigation>
 
-      <div className="regTitle">Ahora inicie sesion!</div>
+      <div className="regTitle">Inicio de sesión</div>
 
       <Box
         component="form"
+        onSubmit={handleSubmit}
         sx={{
           "& .MuiTextField-root": { m: 1, width: "30ch" },
           "& button": { m: 1 },
@@ -111,19 +117,21 @@ const loginPage = () => {
             autoComplete="current-password"
           />
         </div>
+
+        <div>
+          <Button
+            type="submit"
+            variant="contained"
+            size="medium"
+            disabled={loading}
+          >
+            {loading ? <CircularProgress size={24} /> : "Enviar"}
+          </Button>
+        </div>
+        {error && <div style={{ color: "red" }}>{error}</div>}
       </Box>
-      <div>
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-          variant="contained"
-          size="medium"
-        >
-          Enviar
-        </Button>
-      </div>
     </div>
   );
 };
 
-export default loginPage;
+export default LoginPage;

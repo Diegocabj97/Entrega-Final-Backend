@@ -1,47 +1,45 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CardList from "../components/cards/cardList.jsx";
-import { BottomNavigation, BottomNavigationAction } from "@mui/material";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  CircularProgress,
+} from "@mui/material";
 import Navbar from "../components/navbar/navbar.jsx";
 import { useNavigate } from "react-router-dom";
 import getCookieValue from "../utils/getCookieValue.jsx";
 import theme from "../utils/theme.js";
+import HasCookie from "../utils/hasCookie.jsx";
+import { useAuth } from "../context/authContext.jsx";
+
 const ProductsPage = () => {
-  const hasCookie = () => {
-    return document.cookie
-      .split(";")
-      .some((item) => item.trim().startsWith("jwtCookie="));
-  };
-
-  const handleIndexClick = () => {
-    navigate("/");
-  };
-
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Redirige a la página de inicio después de 5 segundos si no hay usuario
-    const redirectIfNoUser = setTimeout(() => {
-      const token = getCookieValue("jwtCookie");
-      if (!token) {
-        navigate("/");
+    const loadProds = async () => {
+      try {
+        // Simular un proceso de carga de 700ms antes de renderizar los productos
+        setTimeout(() => {
+          setLoading(false);
+        }, 700);
+      } catch (error) {
+        setLoading(false); // Desactivar el loader en caso de error
       }
-    }, 2000);
+    };
 
-    return () => clearTimeout(redirectIfNoUser);
-  }, [navigate]);
+    loadProds();
+  }, []);
   return (
     <div>
       <div style={{ margin: "auto" }}>
         <Navbar />
-        {hasCookie() ? (
+        {loading ? (
+          <CircularProgress size={48} />
+        ) : (
           <div>
             <h1>Todos los productos!</h1>
             <CardList></CardList>
-          </div>
-        ) : (
-          <div>
-            <h1>Debes iniciar sesion para ver nuestra lista de productos!</h1>
-            <h2>Serás redireccionado a la pagina de inicio...</h2>
           </div>
         )}
       </div>

@@ -1,47 +1,68 @@
-import React from "react";
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-  Button,
-} from "@mui/material";
+import React, { useState } from "react";
+import { Button, CircularProgress, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import Stack from "@mui/material/Stack";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Navbar from "../components/navbar/navbar";
 import theme from "../utils/theme";
+import { useAuth } from "../context/authContext";
+import HasCookie from "../utils/hasCookie";
 
-const indexPage = () => {
+const IndexPage = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleRegisterClick = () => {
-    navigate("/register");
-  };
-  const handleLoginClick = () => {
-    navigate("/login");
-  };
-  const handleLogoutClick = () => {
-    navigate("/logout");
+    setLoading2(true);
+    setTimeout(() => {
+      setLoading2(false);
+      navigate("/register");
+    }, 500);
   };
 
-  const hasCookie = () =>
-    document.cookie
-      .split(";")
-      .some((item) => item.trim().startsWith("jwtCookie="));
+  const handleLoginClick = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      navigate("/login");
+    }, 500);
+  };
+
+  const handleLogoutClick = async () => {
+    try {
+      setLoading(true);
+
+      // Simular un proceso de carga de 1 segundo antes de realizar el logout
+      setTimeout(async () => {
+        await logout();
+        setLoading(false);
+        navigate("/login");
+      }, 700);
+    } catch (error) {
+      setError(error.message);
+      setLoading(false); // Desactivar el loader en caso de error
+    }
+  };
+
   return (
     <div>
       <Navbar />
       <div className="idxPage">
         <h2 sx={{ variant: "h1" }}>Bienvenido a mi entrega final de Backend</h2>
         <Stack marginTop={3} alignItems="center" spacing={3} direction="column">
-          {hasCookie() ? (
+          {HasCookie() ? (
             <div>
               <Button
+                type="submit"
                 onClick={handleLogoutClick}
                 variant="contained"
-                sx={{ width: "150px" }}
+                size="medium"
+                disabled={loading}
               >
-                <div>Hacer logout</div>
+                {loading && <CircularProgress size={24} />} Cerrar Sesión
               </Button>
+              {error && <div style={{ color: "red" }}>{error}</div>}
             </div>
           ) : (
             <div>
@@ -49,16 +70,20 @@ const indexPage = () => {
                 onClick={handleRegisterClick}
                 variant="contained"
                 sx={{ width: "150px" }}
+                disabled={loading2}
               >
-                <div>Registrarse</div>
+                {loading2 && <CircularProgress size={24} />} Registrarse
               </Button>
+              {error && <div style={{ color: "red" }}>{error}</div>}
               <Button
                 onClick={handleLoginClick}
                 variant="contained"
                 sx={{ width: "150px", marginLeft: "10px" }}
+                disabled={loading}
               >
-                <div>Ir al login</div>
+                {loading && <CircularProgress size={24} />} Ir al login
               </Button>
+              {error && <div style={{ color: "red" }}>{error}</div>}
             </div>
           )}
         </Stack>
@@ -67,4 +92,4 @@ const indexPage = () => {
   );
 };
 
-export default indexPage;
+export default IndexPage;
