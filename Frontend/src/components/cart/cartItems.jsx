@@ -21,6 +21,7 @@ const CartItems = () => {
   const { token } = useAuth();
   const cartId = token.cart;
   const navigate = useNavigate();
+
   const createTicket = async () => {
     const userEmail = token.email;
     const response = await fetch(`${URLBACK}/api/carts/${cartId}/purchase`, {

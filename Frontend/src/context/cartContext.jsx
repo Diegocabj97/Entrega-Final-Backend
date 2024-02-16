@@ -9,24 +9,35 @@ const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const { token } = useAuth();
   const cartId = token ? token.cart : null;
-
+  
   const fetchCart = async () => {
     try {
-      const response = await fetch(`${URLBACK}/api/carts/${cartId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
-          role: token.role,
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Error al obtener el carrito con FETCH");
-      }
+      if (!cartId) {
+        // Si no hay un cartId, intenta obtener el carrito desde el localStorage
+        const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+        setCart(localCart);
+      } else {
+        // Si hay un cartId, obtén el carrito desde el servidor
+        const response = await fetch(`${URLBACK}/api/carts/${cartId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+            role: token.role,
+          },
+        });
 
-      const data = await response.json();
-      const cartData = data.payload.products;
-      setCart(cartData);
+        if (!response.ok) {
+          throw new Error("Error al obtener el carrito con FETCH");
+        }
+
+        const data = await response.json();
+        const cartData = data.payload.products;
+        setCart(cartData);
+
+        // Guardar el carrito en el localStorage
+        localStorage.setItem("cart", JSON.stringify(cartData));
+      }
     } catch (error) {
       console.error("Error al obtener el carrito:", error);
     }

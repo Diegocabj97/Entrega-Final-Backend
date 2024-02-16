@@ -13,11 +13,11 @@ a {
 }
 
 .menu {
-  margin: 0;
-  padding: 0;
+  margin: auto;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: stretch;
+  width: 90vw;
   height: 70px;
   margin-bottom: 80px;
   background-color: #8739f9;
@@ -26,9 +26,7 @@ a {
 
 .menu li {
   display: inline-block;
-  width: 90px;
-  margin-left: 70px;
-  margin-right: 70px;
+  width: 14%;
   transition: all 0.3s ease-in-out;
 }
 
@@ -72,10 +70,6 @@ a {
   opacity: 1;
 }
 
-.menu > li .submenu a:hover {
-  background: rgb(0 0 0 / 20%);
-}
-
 .menu > li a {
   color: #f2f5f5e5;
   display: flex;
@@ -105,4 +99,62 @@ a {
 .MuiBottomNavigationAction-label {
   color: white;
   text-decoration: none;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1600px) {
+  .menu {
+    margin: auto;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: stretch;
+    width: 90vw;
+  }
+}
+
+@media (max-width: 890px) {
+  .menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .menu li {
+    margin: 15px 0px 30px;
+    z-index: 1;
+  }
+
+  .submenu {
+    height: 0;
+    line-height: 40px;
+    width: 30vw;
+    margin-left: 45%;
+    transition: height 0.3s ease-in-out;
+  }
+  .submenu li {
+    margin: auto;
+    width: 100%;
+    transition: all 0.3ms;
+  }
+  .menu li:hover .submenu {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    text-align: center;
+    margin-top: -5%;
+    height: 130px;
+    width: 30vw;
+    background-color: rgb(128, 46, 252);
+    border-radius: 20px;
+    border: solid rgba(0, 0, 0, 0.199) 1px;
+    box-shadow: #fff;
+  }
+
+  .menu li:hover .submenu a {
+    margin: auto;
+    width: 30px;
+  }
 }

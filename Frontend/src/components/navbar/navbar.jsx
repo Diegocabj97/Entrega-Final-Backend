@@ -1,13 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import "./navbar.css";
 import { useNavigate } from "react-router-dom";
-import { BottomNavigation, BottomNavigationAction } from "@mui/material";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  IconButton,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import RestoreIcon from "@mui/icons-material/Restore";
 import HomeIcon from "@mui/icons-material/Home";
 import theme from "../../utils/theme";
+import { styled } from "@mui/system";
+
+const ResponsiveMenu = styled("ul")({
+  display: "flex",
+  justifyContent: "space-around",
+  alignItems: "center",
+  listStyleType: "none",
+  padding: 0,
+  backgroundColor: theme.primaryColor,
+  borderRadius: "10px",
+  "@media (max-width: 600px)": {
+    flexDirection: "column",
+    alignItems: "center",
+  },
+});
 const Navbar = () => {
   const navigate = useNavigate();
+
   const showCart = () => {
     navigate("/cart");
   };
@@ -21,7 +41,7 @@ const Navbar = () => {
   };
   return (
     <nav>
-      <ul className="menu">
+      <ResponsiveMenu className="menu">
         <li>
           <a>
             <BottomNavigation
@@ -33,6 +53,7 @@ const Navbar = () => {
                 width: "100%",
                 backgroundColor: theme.primaryColor,
                 borderRadius: "100px",
+                boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
               }}
             >
               <BottomNavigationAction
@@ -50,7 +71,7 @@ const Navbar = () => {
         </li>
         <li>
           <a>Sessions</a>
-          <ul className="submenu">
+          <ResponsiveMenu className="submenu">
             {hasCookie() ? null : (
               <li>
                 <a
@@ -70,20 +91,20 @@ const Navbar = () => {
                 <a onClick={() => navigate("/login")}>Login</a>
               </li>
             )}
-          </ul>
+          </ResponsiveMenu>
         </li>
         <li>
           <a onClick={() => navigate("/users")}>Users</a>
         </li>
         <li>
           <a>Contact</a>
-          <ul className="submenu">
+          <ResponsiveMenu className="submenu">
             <li>
               <a href="https://wa.me/5491159148462?text=Hola!%20Me%20comunico%20porque...">
                 Whatsapp
               </a>
             </li>
-          </ul>
+          </ResponsiveMenu>
         </li>
         <li>
           <a>
@@ -106,7 +127,7 @@ const Navbar = () => {
             </BottomNavigation>
           </a>
         </li>
-      </ul>
+      </ResponsiveMenu>
     </nav>
   );
 };

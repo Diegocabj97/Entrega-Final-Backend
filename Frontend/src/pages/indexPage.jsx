@@ -50,9 +50,15 @@ const IndexPage = () => {
       <Navbar />
       <div className="idxPage">
         <h2 sx={{ variant: "h1" }}>Bienvenido a mi entrega final de Backend</h2>
-        <Stack marginTop={3} alignItems="center" spacing={3} direction="column">
+        <Stack
+          marginTop={3}
+          alignItems="center"
+          spacing={3}
+          direction="column"
+          sx={{ height: "600px" }}
+        >
           {HasCookie() ? (
-            <div>
+            <section>
               <Button
                 type="submit"
                 onClick={handleLogoutClick}
@@ -63,7 +69,7 @@ const IndexPage = () => {
                 {loading && <CircularProgress size={24} />} Cerrar Sesión
               </Button>
               {error && <div style={{ color: "red" }}>{error}</div>}
-            </div>
+            </section>
           ) : (
             <div>
               <Button

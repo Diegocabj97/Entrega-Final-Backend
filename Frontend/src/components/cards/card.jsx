@@ -48,13 +48,22 @@ const Cards = ({ product }) => {
   const addToCart = async (product) => {
     try {
       if (!token) {
-        // Si no hay token, redirige a la página de inicio
+        // Si no hay token, crea un carrito en el localStorage y agrega el producto
+        const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+        const updatedCart = [...localCart, { ...product, quantity: 1 }];
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        setCart(updatedCart);
         navigate("/login");
       } else {
         const cartId = token.cart;
         if (!cartId) {
-          navigate("/login");
+          // Si no hay un cartId en el token, crea un carrito en el localStorage y agrega el producto
+          const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+          const updatedCart = [...localCart, { ...product, quantity: 1 }];
+          localStorage.setItem("cart", JSON.parse(updatedCart));
+          setCart(updatedCart);
         } else {
+          // Si hay un cartId, agrega el producto al carrito en el servidor
           const response = await fetch(
             `${URLBACK}/api/carts/${cartId}/product/${product._id}`,
             {
@@ -79,6 +88,7 @@ const Cards = ({ product }) => {
       console.error("Error al agregar el producto al carrito:", error);
     }
   };
+
   return (
     <div>
       <Card
