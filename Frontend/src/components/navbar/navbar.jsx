@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   BottomNavigation,
   BottomNavigationAction,
+  CircularProgress,
   IconButton,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -11,6 +12,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import HomeIcon from "@mui/icons-material/Home";
 import theme from "../../utils/theme";
 import { styled } from "@mui/system";
+import { red } from "@mui/material/colors";
 
 const ResponsiveMenu = styled("ul")({
   display: "flex",
@@ -27,6 +29,9 @@ const ResponsiveMenu = styled("ul")({
 });
 const Navbar = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+  const [error, setError] = useState(null);
 
   const showCart = () => {
     navigate("/cart");
@@ -39,6 +44,28 @@ const Navbar = () => {
       .split(";")
       .some((item) => item.trim().startsWith("jwtCookie="));
   };
+  const handleRegisterClick = () => {
+    setLoading2(true);
+    setTimeout(() => {
+      setLoading2(false);
+      navigate("/register");
+    }, 500);
+  };
+
+  const handleLoginClick = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      navigate("/login");
+    }, 500);
+  };
+  const handleLogoutClick = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading2(false);
+      navigate("/logout");
+    }, 500);
+  };
   return (
     <nav>
       <ResponsiveMenu className="menu">
@@ -50,15 +77,15 @@ const Navbar = () => {
                 position: "absolute",
                 justifySelf: "start",
                 color: "white",
-                width: "100%",
+                width: "50%",
                 backgroundColor: theme.primaryColor,
                 borderRadius: "100px",
-                boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
+                boxShadow: "0px 5px 15px 5px rgba(0, 0, 0, 0.24)",
               }}
             >
               <BottomNavigationAction
                 icon={<HomeIcon fontSize="large" />}
-                sx={{ color: "inherit" }}
+                sx={{ color: "inherit", borderRadius: "100px" }}
                 label="Inicio"
                 onClick={handleIndexClick}
                 className="BackBtn"
@@ -66,37 +93,50 @@ const Navbar = () => {
             </BottomNavigation>
           </a>
         </li>
-        <li>
+        <li className="menuItem">
           <a onClick={() => navigate("/allprods")}>Products</a>
         </li>
-        <li>
+        <li className="menuItem">
           <a>Sessions</a>
           <ResponsiveMenu className="submenu">
             {hasCookie() ? null : (
               <li>
-                <a
-                  style={{ textDecoration: "" }}
-                  onClick={() => navigate("/register")}
-                >
-                  Register
+                <a onClick={() => handleRegisterClick()}>
+                  {error && <div style={{ color: "red" }}>{error}</div>}
+                  {loading2 && (
+                    <CircularProgress sx={{ color: "white" }} size={24} />
+                  )}
+                  Registrarse
                 </a>
               </li>
             )}
             {hasCookie() ? (
               <li>
-                <a onClick={() => navigate("/logout")}>Logout</a>
+                {error && <div style={{ color: "red" }}>{error}</div>}
+                <a onClick={() => handleLogoutClick()}>
+                  {loading2 && (
+                    <CircularProgress size={24} sx={{ color: "white" }} />
+                  )}
+                  Logout
+                </a>
               </li>
             ) : (
               <li>
-                <a onClick={() => navigate("/login")}>Login</a>
+                {error && <div style={{ color: "red" }}>{error}</div>}
+                <a onClick={() => handleLoginClick()}>
+                  {loading && (
+                    <CircularProgress size={24} sx={{ color: "white" }} />
+                  )}
+                  Login
+                </a>
               </li>
             )}
           </ResponsiveMenu>
         </li>
-        <li>
+        <li className="menuItem">
           <a onClick={() => navigate("/users")}>Users</a>
         </li>
-        <li>
+        <li className="menuItem">
           <a>Contact</a>
           <ResponsiveMenu className="submenu">
             <li>
@@ -112,16 +152,20 @@ const Navbar = () => {
               showLabels
               sx={{
                 position: "relative",
-                alignItems: "center",
                 justifySelf: "end",
-                width: "7%",
-                borderRadius: "100px",
+                color: "white",
+                width: "50%",
                 backgroundColor: theme.primaryColor,
+                borderRadius: "100px",
+                boxShadow: "0px 5px 15px 5px rgba(0, 0, 0, 0.24)",
               }}
             >
               <BottomNavigationAction
                 icon={<ShoppingCartIcon fontSize="large" />}
-                sx={{ color: "inherit" }}
+                sx={{
+                  color: "inherit",
+                  borderRadius: "100px",
+                }}
                 onClick={showCart}
               />
             </BottomNavigation>

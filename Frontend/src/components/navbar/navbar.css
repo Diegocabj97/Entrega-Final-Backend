@@ -28,10 +28,15 @@ a {
   display: inline-block;
   width: 14%;
   transition: all 0.3s ease-in-out;
+  z-index: 33;
+}
+.menu li button {
+  z-index: 333333;
 }
 
 .menu li:hover .submenu {
   height: 55px;
+  z-index: -999;
 }
 
 .menu > li:hover > a {
@@ -47,6 +52,7 @@ a {
   overflow: hidden;
   position: absolute;
   left: 15.6%;
+  top: 6vh;
   display: flex;
   justify-content: center;
   align-items: stretch;
@@ -58,14 +64,22 @@ a {
   transition: height 0.3s ease-in-out;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  z-index: -999;
+  background-color: #8739f9;
 }
 .menu li .submenu a {
   color: #fff;
   opacity: 0;
   font-size: 16px;
   transition: opacity 0.25s;
+  border-radius: 10px;
+  background-color: #8739f9;
+  border: solid 1px rgba(0, 0, 0, 0.212);
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.178);
 }
-
+.submenu li :hover {
+  background-color: #3d0099;
+}
 .menu > li:hover .submenu a {
   opacity: 1;
 }
@@ -103,16 +117,6 @@ a {
 
 /* RESPONSIVE */
 
-@media (max-width: 1600px) {
-  .menu {
-    margin: auto;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: stretch;
-    width: 90vw;
-  }
-}
-
 @media (max-width: 890px) {
   .menu {
     display: flex;
@@ -121,22 +125,26 @@ a {
     height: auto;
     margin-bottom: 20px;
   }
-
   .menu li {
     margin: 15px 0px 30px;
-    z-index: 1;
+    width: 90%;
+    align-items: center;
   }
 
-  .submenu {
-    height: 0;
-    line-height: 40px;
-    width: 30vw;
-    margin-left: 45%;
-    transition: height 0.3s ease-in-out;
+  .menu li a {
+    margin-top: 10px;
+    border-radius: 10px;
+    width: 100%;
+    align-items: center;
   }
+  .menu li:hover .submenu a {
+    margin: auto;
+    width: 80%;
+  }
+
   .submenu li {
     margin: auto;
-    width: 100%;
+    width: 32vh;
     transition: all 0.3ms;
   }
   .menu li:hover .submenu {
@@ -144,17 +152,30 @@ a {
     position: absolute;
     align-items: center;
     text-align: center;
-    margin-top: -5%;
+    right: 0;
+    margin-top: 15%;
     height: 130px;
-    width: 30vw;
-    background-color: rgb(128, 46, 252);
+    width: 32vw;
+    background-color: rgb(121, 33, 253);
     border-radius: 20px;
     border: solid rgba(0, 0, 0, 0.199) 1px;
     box-shadow: #fff;
+    z-index: 99999999;
   }
 
   .menu li:hover .submenu a {
     margin: auto;
-    width: 30px;
+  }
+  .submenu {
+    height: 0;
+    line-height: 40px;
+    width: 30vw;
+    margin-left: 45%;
+    margin-top: 10%;
+    transition: height 0.3s ease-in-out;
+  }
+  .menuItem {
+    border-bottom: solid rgba(0, 0, 0, 0.199) 1px;
+    
   }
 }
